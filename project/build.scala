@@ -16,6 +16,7 @@ object ApplicationBuild extends Build {
     "com.typesafe.akka" %% "akka-testkit" % akkaVersion % "test",
     "io.spray" % "spray-routing" % sprayVersion,
     "io.spray" % "spray-caching" % sprayVersion,
+    "io.spray" % "spray-can" % sprayVersion,
     "io.spray" %% "spray-json" % "1.2.5",
     "ch.qos.logback" % "logback-classic" % logbackVersion,
     "ch.qos.logback" % "logback-core" % logbackVersion,
@@ -32,6 +33,7 @@ object ApplicationBuild extends Build {
     version := "0.01.5",
     resolvers ++= myResolvers,
     name := "breeze-bokeh",
+    mainClass := Some("breeze.bokeh.Server"),
     //fork := true,
     libraryDependencies ++= dependencies,
     publishTo := Some(Resolver.file("file",  new File( "/tmp/injera-publish" )) )

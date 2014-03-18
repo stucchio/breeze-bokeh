@@ -11,23 +11,25 @@ import java.util.UUID
 import com.bayesianwitch.injera.misc.UUIDWeakReferenceRegistry
 
 
-trait BreezeDataServer extends HttpService with SprayJsonSupport  {
+trait BreezeDataServer extends HttpService with SprayJsonSupport with ActorLogging { self: Actor =>
   import BreezeSerializers._
   import VectorRegister.WrappedVectorWriter
-  def doubleRegistry: VectorRegister
+  protected def registry: VectorRegister
+
 
   private class NotFoundException(msg: String) extends Exception(msg)
 
   def dataRoutes: (RequestContext => Unit) = {
     path("array" / Segment) { arrayUUIDStr =>
+      val uuid = UUID.fromString(arrayUUIDStr)
       get {
-        val uuid = UUID.fromString(arrayUUIDStr)
-        val data = doubleRegistry.get(uuid)
-        data.map( d =>
+        val data = registry.get(uuid)
+        data.map( d => {
           jsonpWithParameter("jsonp") {
-            complete { d }
+            complete { log.error("complete"); d }
           }
-        ).getOrElse( complete { HttpResponse(StatusCodes.InternalServerError) } )
+        }
+        ).getOrElse( complete { HttpResponse(StatusCodes.NotFound) } )
       }
     }
   }
