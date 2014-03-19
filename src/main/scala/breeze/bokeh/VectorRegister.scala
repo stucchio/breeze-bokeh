@@ -7,7 +7,10 @@ import java.util.UUID
 import spray.json._
 
 object VectorRegister {
-  sealed trait WrappedVector
+  sealed trait WrappedVector {
+    def v: DenseVector[_]
+    def length: Int = v.length
+  }
   case class DenseVectorDouble(v: DenseVector[Double]) extends WrappedVector
   case class DenseVectorFloat(v: DenseVector[Float]) extends WrappedVector
   case class DenseVectorLong(v: DenseVector[Long]) extends WrappedVector

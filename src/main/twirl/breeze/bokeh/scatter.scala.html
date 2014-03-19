@@ -1,4 +1,4 @@
-@(xdata: String, ydata: String, xlabel: String, ylabel: String, title: String)
+@(xdata: String, ydata: String, radius: String, xlabel: String, ylabel: String, title: String)
 
 <!doctype html>
 <html>
@@ -20,11 +20,14 @@
     data = {
       x: @{ydata},
       y: @{ydata},
+      radius: @{radius},
     };
     scatter = {
       type: 'circle',
       x: 'x',
       y: 'y',
+      radius: 'radius',
+      radius_units: 'data',
       fill_alpha: 0.6,
       line_color: null
     };

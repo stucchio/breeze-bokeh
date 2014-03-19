@@ -41,8 +41,9 @@ trait BreezeDataServer extends HttpService with SprayJsonSupport with ActorLoggi
           (for {
             xd <- registry.get(xUUID)
             yd <- registry.get(xUUID)
+            radius = DenseVector.ones[Int](xd.length)
           } yield {
-            complete { html.scatter(xd.toJson.compactPrint, yd.toJson.compactPrint, "foo", "bar", "mytitle").toString }
+            complete { html.scatter(xd.toJson.compactPrint, yd.toJson.compactPrint, radius.toJson.compactPrint, "foo", "bar", "mytitle").toString }
           }).getOrElse( complete { HttpResponse(StatusCodes.NotFound) } )
         }
       }
