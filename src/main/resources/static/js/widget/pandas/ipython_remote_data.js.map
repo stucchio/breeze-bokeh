@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "ipython_remote_data.js",
+  "sourceRoot": "../../../../src/coffee/widget/pandas/",
+  "sources": [
+    "ipython_remote_data.coffee"
+  ],
+  "names": [],
+  "mappings": "AAEA;CAAA,KAAA;oSAAA;;CAAA,CAAA,CAGG,GAHH,EAGG,CAAC,CAHG,GAGJ,UAHI;CAKL,OAAA,0CAAA;CAAA,GAAM;CACJ;;;;;CAAA;;CAAA,EAAM,CAAN,eAAA;;CAAA,EAEE,KADF;CACE,CAAkB,MAAlB,QAAA;CAFF,OAAA;;CAAA;;CAD8B;CAAhC,GAKM;CACJ;;;;;CAAA;;CAAA,EAAO,EAAP,YAAA;;CAAA;;CAD+B,OAAQ;CAGzC,UAAO;CAAA,CACI,IAAT,CAAA,UADK;CAAA,CAEa,EAAA,EAAlB,MAAA,MAAkB;CAZnB,KAUD;CAbF,EAGG;CAHH"
+}

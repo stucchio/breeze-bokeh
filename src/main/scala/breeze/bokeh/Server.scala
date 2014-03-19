@@ -22,9 +22,11 @@ object Server {
   def main(args: Array[String]) = {  // THIS IS FOR TESTING ONLY DO NOT USE
     val registry = new VectorRegister
     import breeze.linalg._
-    val x = DenseVector.zeros[Double](32)
-    println(registry.register(x))
+    val x = DenseVector.range(0,32)
+    val registered = registry.register(x)
+    println(registered)
     start("localhost", 8080, registry)
+    println("http://localhost:8080/scatter/" + registered + "/" + registered)
   }
 
   private implicit val rs = implicitly[spray.routing.RoutingSettings]

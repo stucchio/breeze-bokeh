@@ -1,6 +1,7 @@
 import sbt._
 import Defaults._
 import Keys._
+import twirl.sbt.TwirlPlugin._
 
 object ApplicationBuild extends Build {
 
@@ -37,7 +38,7 @@ object ApplicationBuild extends Build {
     //fork := true,
     libraryDependencies ++= dependencies,
     publishTo := Some(Resolver.file("file",  new File( "/tmp/injera-publish" )) )
-  )
+  ) ++ Twirl.settings
 
   val myResolvers = Seq(
     "Sonatatype Snapshots" at "http://oss.sonatype.org/content/repositories/snapshots",

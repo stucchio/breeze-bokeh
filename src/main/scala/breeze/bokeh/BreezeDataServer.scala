@@ -5,6 +5,7 @@ import akka.event.{Logging, LoggingAdapter}
 import spray.routing.{HttpService, RequestContext, ExceptionHandler}
 import spray.httpx.SprayJsonSupport
 import spray.http._
+import MediaTypes._
 import spray.json._
 import breeze.linalg._
 import java.util.UUID
@@ -30,6 +31,20 @@ trait BreezeDataServer extends HttpService with SprayJsonSupport with ActorLoggi
           }
         }
         ).getOrElse( complete { HttpResponse(StatusCodes.NotFound) } )
+      }
+    } ~
+    path("scatter" / Segment / Segment) { (xUUIDStr: String, yUUIDStr: String) =>
+      get {
+        val xUUID = UUID.fromString(xUUIDStr)
+        val yUUID = UUID.fromString(yUUIDStr)
+        respondWithMediaType(`text/html`) {
+          (for {
+            xd <- registry.get(xUUID)
+            yd <- registry.get(xUUID)
+          } yield {
+            complete { html.scatter(xd.toJson.compactPrint, yd.toJson.compactPrint, "foo", "bar", "mytitle").toString }
+          }).getOrElse( complete { HttpResponse(StatusCodes.NotFound) } )
+        }
       }
     }
   }

@@ -8,3 +8,7 @@ resolvers += Resolver.url("artifactory", url("http://scalasbt.artifactoryonline.
 logLevel := Level.Warn
 
 resolvers += "Scala Tools Releases" at "https://repository.jboss.org/nexus/content/repositories/scala-tools-releases"
+
+resolvers += "spray repo" at "http://repo.spray.io"
+
+addSbtPlugin("io.spray" % "sbt-twirl" % "0.7.0")

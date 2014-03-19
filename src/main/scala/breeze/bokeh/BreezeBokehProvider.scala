@@ -14,15 +14,23 @@ import com.bayesianwitch.injera.misc.UUIDWeakReferenceRegistry
 
 trait BreezeBokehProvider extends HttpService with SprayJsonSupport  {
 
-  private lazy val bokehJs = scala.io.Source.fromURL(getClass.getResource("/bokeh.js")).mkString
-
-  def bokehRoutes: (RequestContext => Unit) = {
-    path("bokeh.js") {
-      get {
-        respondWithMediaType(`application/javascript`) {
-          complete { bokehJs }
+  private case class staticRender(filename: String, mediaType: MediaType = `application/javascript`) {
+    private lazy val data = scala.io.Source.fromURL(getClass.getResource("/" + filename)).mkString
+    def route: (RequestContext => Unit) = {
+      path(filename) {
+        get {
+          respondWithMediaType(mediaType) {
+            complete { data }
+          }
         }
       }
+    }
+  }
+
+  def bokehRoutes: (RequestContext => Unit) = {
+    pathPrefix("static") {
+      pathPrefix("css") { get { getFromResourceDirectory("static/css") } } ~
+      pathPrefix("js") { get { getFromResourceDirectory("static/js") } }
     }
   }
 }

@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "pandas_plot_source.js",
+  "sourceRoot": "../../../../src/coffee/widget/pandas/",
+  "sources": [
+    "pandas_plot_source.coffee"
+  ],
+  "names": [],
+  "mappings": "AAEA;CAAA,KAAA;oSAAA;;CAAA,CAAA,CAGG,GAHH,EAGG,CAAC,CAHG,MAGJ,WAHI;CAKL,OAAA,wCAAA;CAAA,GAAM;CACJ;;;;;CAAA;;CAAA,EAAM,CAAN,cAAA;;CAAA;;CAD6B,eAAgB;CAA/C,GAGM;CACJ;;;;;CAAA;;CAAA,EAAO,EAAP,WAAA;;CAAA;;CAD8B,OAAQ;CAGxC,UAAO;CAAA,CACI,IAAT,CAAA,SADK;CAAA,CAEa,EAAA,EAAlB,MAAA,KAAkB;CAVnB,KAQD;CAXF,EAGG;CAHH"
+}

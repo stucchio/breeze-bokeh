@@ -1,0 +1,53 @@
+@(xdata: String, ydata: String, xlabel: String, ylabel: String, title: String)
+
+<!doctype html>
+<html>
+  <head>
+      <meta charset='UTF-8' />
+      <meta http-equiv='content-type' content='text/html; charset=utf-8' />
+
+      <title>@{title}</title>
+
+      <link href="/static/css/bokeh.css" rel="stylesheet">
+      <script data-main="/static/js/main" src='/static/js/vendor/requirejs/require.js'></script>
+      <script src="/static/js/config.js"></script>
+  </head>
+  <body>
+    <script type="application/javascript">
+(function() {
+  require(['main'], function(Bokeh) {
+    var data, i, options, plot, scatter, val;
+    data = {
+      x: @{ydata},
+      y: @{ydata},
+    };
+    scatter = {
+      type: 'circle',
+      x: 'x',
+      y: 'y',
+      fill_alpha: 0.6,
+      line_color: null
+    };
+    options = {
+      title: "@{title}",
+      nonselected: {
+        fill_color: 'black',
+        line_alpha: 0.1,
+        fill_alpha: 0.05
+      },
+      dims: [600, 600],
+      xrange: [0, 100],
+      yrange: [0, 100],
+      xaxes: "min",
+      yaxes: "min",
+      tools: true,
+      legend: false
+    };
+    plot = Bokeh.Plotting.make_plot(scatter, data, options);
+    return Bokeh.Plotting.show(plot);
+  });
+
+}).call(this);
+    </script>
+  </body>
+</html>
