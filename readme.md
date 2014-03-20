@@ -26,9 +26,13 @@ Then you can create plots. Currently only a scatterplot is supported:
 
 Copy&past the printed URL into a browser.
 
+Currently the only plot type is `plot.Scatterplot`. The author does recognize the [irony](http://www.chrisstucchio.com/blog/2012/dont_use_scatterplots.html).
+
 ## Garbage Collection and memory leaks
 
-The `VectorRegister` is built on top of [injera's](https://github.com/stucchio/injera) [weak registry](https://github.com/stucchio/injera/blob/master/src/main/scala/injera/misc/WeakRegistry.scala) - this ensures that garbage collection is not inhibited. I.e., in the example above, as soon as `xcoords` and/or `ycoords` fall out of scope, they will be garbage collected and the URL will no longer work.
+Creating a `Plot` object (e.g. `Scatter(...)`) does not hinder garbage collection. The [weak registry](https://github.com/stucchio/injera/blob/master/src/main/scala/injera/misc/WeakRegistry.scala) from [injera](https://github.com/stucchio/injera) uses weak references to ensure that objects can be garbage collected when they fall out of scope. Whether or not this actually occurs is up to the JVM.
+
+The plotting URL will continue to work until the garbage collection actually occurs, so don't build anything security critical on top of this.
 
 # Longer term vision
 
