@@ -1,26 +1,14 @@
 @(xdata: String, ydata: String, radius: String, xlabel: String, ylabel: String, title: String)
-
-<!doctype html>
-<html>
-  <head>
-      <meta charset='UTF-8' />
-      <meta http-equiv='content-type' content='text/html; charset=utf-8' />
-
-      <title>@{title}</title>
-
-      <link href="/static/css/bokeh.css" rel="stylesheet">
-      <script data-main="/static/js/main" src='/static/js/vendor/requirejs/require.js'></script>
-      <script src="/static/js/config.js"></script>
-  </head>
-  <body>
-    <script type="application/javascript">
 (function() {
   require(['main'], function(Bokeh) {
     var data, i, options, plot, scatter, val;
+    var x = @{xdata};
+    var y = @{ydata};
+    var r = @{radius};
     data = {
-      x: @{ydata},
-      y: @{ydata},
-      radius: @{radius},
+      x: x,
+      y: y,
+      radius: r,
     };
     scatter = {
       type: 'circle',
@@ -47,10 +35,7 @@
       legend: false
     };
     plot = Bokeh.Plotting.make_plot(scatter, data, options);
-    return Bokeh.Plotting.show(plot);
+    return Bokeh.Plotting.show(plot, [document.getElementById("@{containerId}")]);
   });
 
 }).call(this);
-    </script>
-  </body>
-</html>

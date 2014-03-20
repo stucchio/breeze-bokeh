@@ -13,39 +13,24 @@ import com.bayesianwitch.injera.misc.UUIDWeakReferenceRegistry
 
 
 trait BreezeDataServer extends HttpService with SprayJsonSupport with ActorLogging { self: Actor =>
-  import BreezeSerializers._
-  import VectorRegister.WrappedVectorWriter
-  protected def registry: VectorRegister
+  protected def plotRegistry: UUIDWeakReferenceRegistry[Plot]
 
 
   private class NotFoundException(msg: String) extends Exception(msg)
 
   def dataRoutes: (RequestContext => Unit) = {
-    path("array" / Segment) { arrayUUIDStr =>
-      val uuid = UUID.fromString(arrayUUIDStr)
+    path("plot" / Segment) { plotIdAsString: String =>
+      val uuid = UUID.fromString(plotIdAsString)
       get {
-        val data = registry.get(uuid)
-        data.map( d => {
-          jsonpWithParameter("jsonp") {
-            complete { log.error("complete"); d }
+        val optionalPlot = plotRegistry.get(uuid)
+        optionalPlot.map( plot => {
+          val containerId = UUID.randomUUID.toString
+          respondWithMediaType(`text/html`) {
+            complete {
+              templates.html.plot(containerId, plot.renderJavascript(containerId), plot.title).toString
+            }
           }
-        }
-        ).getOrElse( complete { HttpResponse(StatusCodes.NotFound) } )
-      }
-    } ~
-    path("scatter" / Segment / Segment) { (xUUIDStr: String, yUUIDStr: String) =>
-      get {
-        val xUUID = UUID.fromString(xUUIDStr)
-        val yUUID = UUID.fromString(yUUIDStr)
-        respondWithMediaType(`text/html`) {
-          (for {
-            xd <- registry.get(xUUID)
-            yd <- registry.get(xUUID)
-            radius = DenseVector.ones[Int](xd.length)
-          } yield {
-            complete { html.scatter(xd.toJson.compactPrint, yd.toJson.compactPrint, radius.toJson.compactPrint, "foo", "bar", "mytitle").toString }
-          }).getOrElse( complete { HttpResponse(StatusCodes.NotFound) } )
-        }
+        }).getOrElse( complete { HttpResponse(StatusCodes.NotFound) } )
       }
     }
   }

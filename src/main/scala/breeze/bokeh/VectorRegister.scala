@@ -5,6 +5,8 @@ import scala.reflect.runtime.universe._
 import breeze.linalg._
 import java.util.UUID
 import spray.json._
+import scalaz._
+import Scalaz._
 
 object VectorRegister {
   sealed trait WrappedVector {
@@ -15,23 +17,6 @@ object VectorRegister {
   case class DenseVectorFloat(v: DenseVector[Float]) extends WrappedVector
   case class DenseVectorLong(v: DenseVector[Long]) extends WrappedVector
   case class DenseVectorInt(v: DenseVector[Int]) extends WrappedVector
-
-  private implicit class OptionPlus[V](val x: Option[V]) extends AnyVal {
-    //Scalaz already has one of these, but better to avoid the import
-    def <+>[U >: V](other: Option[U]): Option[U] = if (x.isDefined) { x } else { other }
-  }
-
-  private[bokeh] implicit object WrappedVectorWriter extends RootJsonFormat[WrappedVector] {
-    //private because of incomplete implementation. Useful for this module, but should not be used externally.
-    import BreezeSerializers._
-    def write(obj: WrappedVector) = obj match {
-      case DenseVectorDouble(v) => DoubleNumericArrayWriter.write(v)
-      case DenseVectorFloat(v) => FloatNumericArrayWriter.write(v)
-      case DenseVectorLong(v) => LongNumericArrayWriter.write(v)
-      case DenseVectorInt(v) => IntNumericArrayWriter.write(v)
-    }
-    def read(json: JsValue) = ???
-  }
 }
 
 class VectorRegister {
@@ -41,7 +26,7 @@ class VectorRegister {
   private val longRegistry = new UUIDWeakReferenceRegistry[DenseVector[Long]]
   private val intRegistry = new UUIDWeakReferenceRegistry[DenseVector[Int]]
 
-  def get(uuid: UUID): Option[WrappedVector] = doubleRegistry.get(uuid).map(DenseVectorDouble.apply) <+> floatRegistry.get(uuid).map(DenseVectorFloat.apply) <+>
+  def get(uuid: UUID): Option[WrappedVector] = (doubleRegistry.get(uuid).map(DenseVectorDouble.apply): Option[WrappedVector]) <+> floatRegistry.get(uuid).map(DenseVectorFloat.apply) <+>
      longRegistry.get(uuid).map(DenseVectorLong.apply) <+> intRegistry.get(uuid).map(DenseVectorInt.apply)
 
   private val doubleTag = (new Array[Double](1)).getClass.getComponentType.asInstanceOf[Class[_]]
