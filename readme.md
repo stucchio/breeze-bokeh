@@ -7,30 +7,24 @@ Graphs for breeze. Totally experimental at this point.
     $ sbt
     > run
     [info] Running breeze.bokeh.Server
-    bef1d598-f19b-4234-9fa2-99e9ba286659
-    http://localhost:8080/scatter/bef1d598-f19b-4234-9fa2-99e9ba286659/bef1d598-f19b-4234-9fa2-99e9ba286659
+    http://localhost:8080/plot/bef1d598-f19b-4234-9fa2-99e9ba286659
 
 Copy that url into your browser. Yay for a [BokehJS](https://github.com/ContinuumIO/bokeh/tree/master/bokehjs) powered Scatterplot.
 
 # Core Concepts
 
-At the core of Breeze-Bokeh is the `VectorRegister`. This is a data structure which assigns vectors sitting in memory a unique UUID:
+At the core of Breeze-Bokeh is the registry, which is of type `com.bayesianwitch.injera.misc.UUIDWeakReferenceRegistry`. This is a data structure which assigns UUID's to objects sitting in memory. A server is then built which references this:
 
-    val registry = new VectorRegister
+    implicit val registry = new UUIDWeakReferenceRegistry[Plot]
+    val server = Server.start("localhost", 8080, registry)
+
+Then you can create plots. Currently only a scatterplot is supported:
+
     val x = DenseVector.range(0,32)
-    val registered = registry.register(x)
+    val plot = plots.Scatter(x,x,None,"xlabel", "ylabel",Some("my plot"))
+    println("URL is: http://localhost:8080" + plot.urlPath)
 
-Once a vector is registered, Breeze-Bokeh can embed it in javascript for plotting. At the moment only a basic scatterplot is supported. A Breeze-Bokeh server is started via the command:
-
-    breeze.bokeh.Server.start("localhost", 80, registry)
-
-To create a plot:
-
-    val xUUID = registry.register(xcoords)
-    val yUUID = registry.register(ycoords)
-    println("http://localhost:8080/scatter/" + xUUID + "/" + yUUID)
-
-Then copy&past the printed URL into a browser.
+Copy&past the printed URL into a browser.
 
 ## Garbage Collection and memory leaks
 
