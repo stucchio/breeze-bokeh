@@ -2,31 +2,30 @@
 <script type="application/javascript">
 (function() {
   require(['main'], function(Bokeh) {
-      data = {
-          x: @Html(xdata),
-          y: @Html(ydata),
-      };
+    data = {
+      x: @Html(xdata),
+      y: @Html(ydata),
+    };
 
-options = {
-  xrange: [@{xrange._1}, @{xrange._2}],
-  yrange: [@{yrange._1}, @{yrange._2}],
-  xaxes: "min",
-  yaxes: "min",
-  tools: true,
-}
+    options = {
+      xrange: [@{xrange._1}, @{xrange._2}],
+      yrange: [@{yrange._1}, @{yrange._2}],
+      xaxes: "min",
+      yaxes: "min",
+      tools: true,
+    }
 
-spec = {
-  type: 'line',
-  x: 'x',
-  y: 'y',
-  line_width: @{lineWidth},
-  line_dash: @{lineDash},
-  line_color: "@{lineColor}",
-}
+    spec = {
+      type: 'line',
+      x: 'x',
+      y: 'y',
+      line_width: @{lineWidth},
+      line_dash: @{lineDash},
+      line_color: "@{lineColor}",
+    }
 
-plot = Bokeh.Plotting.make_plot(spec, data, options)
+    plot = Bokeh.Plotting.make_plot(spec, data, options)
     return Bokeh.Plotting.show(plot, [document.getElementById("@{containerId}")]);
   });
-
 }).call(this);
 </script>
