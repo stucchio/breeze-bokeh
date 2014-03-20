@@ -12,7 +12,6 @@ trait Plot { self: Plot =>
       <script src="/static/js/config.js"></script>
    """
   def renderJavascript(containerId: String): String
-  def underlyingData: Seq[Plot.RenderableNumericArray[_]]
   def title: Option[String]
   def urlPath = "/plot/" + registry.register(self)
 }
@@ -21,5 +20,7 @@ object Plot {
   implicit class RenderableNumericArray[T](val data: T)(implicit serializer: JsonNumericArraySerializer[T]) {
     def renderJson = serializer.renderJson(data)
     def render = serializer.render(data)
+    def max = serializer.max(data)
+    def min = serializer.min(data)
   }
 }

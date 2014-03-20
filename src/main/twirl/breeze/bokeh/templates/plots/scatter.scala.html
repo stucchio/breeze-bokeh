@@ -1,4 +1,4 @@
-@(containerId: String, xdata: String, ydata: String, radius: String, xlabel: String, ylabel: String, title: Option[String])
+@(containerId: String, xdata: String, ydata: String, radius: String, xlabel: String, ylabel: String, title: Option[String], xrange: (Double,Double), yrange: (Double,Double))
 <script type="application/javascript">
 (function() {
   require(['main'], function(Bokeh) {
@@ -7,14 +7,14 @@
     var y = @Html(ydata);
     var r = @Html(radius);
     data = {
-      x: x,
-      y: y,
+      @{xlabel}: x,
+      @{ylabel}: y,
       radius: r
     };
     scatter = {
       type: 'circle',
-      x: 'x',
-      y: 'y',
+      x: '@{xlabel}',
+      y: '@{ylabel}',
       radius: 'radius',
       radius_units: 'data',
       fill_alpha: 0.6,
@@ -28,8 +28,10 @@
         fill_alpha: 0.05
       },
       dims: [600, 600],
-      xrange: [0, 100],
-      yrange: [0, 100],
+      xrange: [@{xrange._1}, @{xrange._2}],
+      yrange: [@{yrange._1}, @{yrange._2}],
+      xlabel: "@{xlabel}",
+      ylabel: "@{ylabel}",
       xaxes: "min",
       yaxes: "min",
       tools: true,

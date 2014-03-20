@@ -6,7 +6,7 @@ import Plot._
 import breeze.linalg._
 import com.bayesianwitch.injera.misc.UUIDWeakReferenceRegistry
 
-case class Scatter[T](x: RenderableNumericArray[T], y: RenderableNumericArray[T], r: Option[RenderableNumericArray[T]] = None, xlabel: String, ylabel: String, title: Option[String])(implicit val registry: UUIDWeakReferenceRegistry[Plot]) extends Plot {
+case class Scatter[T](x: RenderableNumericArray[T], y: RenderableNumericArray[T], r: Option[RenderableNumericArray[T]] = None, xlabel: String, ylabel: String, title: Option[String], xrange: Option[(Double,Double)] = None, yrange: Option[(Double,Double)] = None)(implicit val registry: UUIDWeakReferenceRegistry[Plot]) extends Plot {
   private def radius = r.map(_.render).getOrElse( """
     (function(){
       var r = [];
@@ -17,6 +17,8 @@ case class Scatter[T](x: RenderableNumericArray[T], y: RenderableNumericArray[T]
     })()
   """)
 
-  def renderJavascript(containerId: String) = dependencies + "\n" + html.scatter(containerId, x.render, y.render, radius, xlabel, ylabel, title).toString
-  def underlyingData = Seq(x,y)
+  private def xr = xrange.getOrElse( (x.min, x.max) )
+  private def yr = yrange.getOrElse( (y.min, y.max) )
+
+  def renderJavascript(containerId: String) = dependencies + "\n" + html.scatter(containerId, x.render, y.render, radius, xlabel, ylabel, title, xr, yr).toString
 }
