@@ -28,7 +28,7 @@ object Server {
     val plot = plots.Scatter(x,x,None,"xlabel", "ylabel",Some("my plot"))
 
     start("localhost", 8080, registry)
-    println("http://localhost:8080/plot/" + registry.register(plot))
+    println("http://localhost:8080" + plot.urlPath)
   }
 
   private implicit val rs = implicitly[spray.routing.RoutingSettings]

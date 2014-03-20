@@ -14,6 +14,7 @@ trait Plot { self: Plot =>
   def renderJavascript(containerId: String): String
   def underlyingData: Seq[Plot.RenderableNumericArray[_]]
   def title: Option[String]
+  def urlPath = "/plot/" + registry.register(self)
 }
 
 object Plot {
