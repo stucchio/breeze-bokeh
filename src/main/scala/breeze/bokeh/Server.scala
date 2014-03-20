@@ -27,7 +27,7 @@ object Server {
     start("localhost", 8080, registry)
 
     val x = DenseVector.range(0,32)
-    val plot = plots.Scatter(x,x,None,"xlabel", "ylabel",Some("my plot"))
+    val plot = plots.Line(x,x,"xlabel", "ylabel",Some("my plot"))
     println("http://localhost:8080" + plot.urlPath)
   }
 
