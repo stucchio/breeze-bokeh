@@ -15,5 +15,5 @@ case class Line[T](x: RenderableNumericArray[T], y: RenderableNumericArray[T], x
 
   private def ld = lineDash.map( _.toList.toJson.compactPrint ).getOrElse("[]")
 
-  def renderJavascript(containerId: String) = Seq(<script type="application/javascript">html.line(containerId, x.render, y.render, xlabel, ylabel, lineWidth, ld, lineColor, xr, yr)</script>)
+  def renderJavascript(containerId: String) = Seq(<script type="application/javascript">{Unparsed(txt.line(containerId, x.render, y.render, xlabel, ylabel, lineWidth, ld, lineColor, xr, yr).toString)}</script>)
 }

@@ -20,5 +20,5 @@ case class Scatter[T](x: RenderableNumericArray[T], y: RenderableNumericArray[T]
   private def xr = xrange.getOrElse( (x.min, x.max) )
   private def yr = yrange.getOrElse( (y.min, y.max) )
 
-  def renderJavascript(containerId: String) = Seq(<script type="application/javsacript">txt.scatter(containerId, x.render, y.render, radius, xlabel, ylabel, title, xr, yr).toString </script>)
+  def renderJavascript(containerId: String) = Seq(<script type="application/javsacript">{Unparsed(txt.scatter(containerId, x.render, y.render, radius, xlabel, ylabel, title, xr, yr).toString)}</script>)
 }
