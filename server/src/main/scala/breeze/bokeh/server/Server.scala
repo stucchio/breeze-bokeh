@@ -1,5 +1,6 @@
-package breeze.bokeh
+package breeze.bokeh.server
 
+import breeze.bokeh._
 import akka.actor.{ActorSystem, Props, Actor, ActorLogging}
 import akka.io.IO
 import spray.can.Http

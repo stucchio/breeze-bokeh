@@ -1,5 +1,6 @@
-package breeze.bokeh
+package breeze.bokeh.server
 
+import breeze.bokeh._
 import akka.actor._
 import akka.event.{Logging, LoggingAdapter}
 import spray.routing.{HttpService, RequestContext, ExceptionHandler}
