@@ -4,6 +4,7 @@ import breeze.bokeh._
 import breeze.bokeh.templates.plots._
 import Plot._
 import breeze.linalg._
+import scala.xml._
 import com.bayesianwitch.injera.misc.UUIDWeakReferenceRegistry
 
 case class Scatter[T](x: RenderableNumericArray[T], y: RenderableNumericArray[T], r: Option[RenderableNumericArray[T]] = None, xlabel: String, ylabel: String, title: Option[String], xrange: Option[(Double,Double)] = None, yrange: Option[(Double,Double)] = None)(implicit val registry: UUIDWeakReferenceRegistry[Plot]) extends Plot {
