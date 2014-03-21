@@ -1,5 +1,4 @@
 @(containerId: String, xdata: String, ydata: String, xlabel: String, ylabel: String, lineWidth: Int, lineDash: String, lineColor: String, xrange: (Double,Double), yrange: (Double,Double))
-<script type="application/javascript">
 (function() {
     data = {
       x: @Html(xdata),
@@ -27,4 +26,3 @@
     return Bokeh.Plotting.show(plot, [document.getElementById("@{containerId}")]);
 
 })();
-</script>

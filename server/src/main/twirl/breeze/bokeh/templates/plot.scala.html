@@ -6,10 +6,10 @@
       <meta charset='UTF-8' />
       <meta http-equiv='content-type' content='text/html; charset=utf-8' />
       <title>@{plot.title.getOrElse("Breeze-Bokeh plot")}</title>
-      @Html(plot.dependencies)
+      @Html(plot.dependencies.toString)
   </head>
   <body>
       <div id="@{containerId}"></div>
-      @Html(plot.renderJavascript(containerId))
+      @Html(plot.renderJavascript(containerId).toString)
   </body>
 </html>

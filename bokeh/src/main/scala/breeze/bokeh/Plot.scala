@@ -1,16 +1,17 @@
 package breeze.bokeh
 
 import com.bayesianwitch.injera.misc.UUIDWeakReferenceRegistry
+import scala.xml._
 
 trait Plot { self: Plot =>
   protected val registry: UUIDWeakReferenceRegistry[Plot]
   registry.register(self)
 
-  def dependencies: String = """
-      <link href="http://cdn.pydata.org/bokeh-0.4.min.css" rel="stylsheet" type="text/css"></link>
-      <script src="http://cdn.pydata.org/bokeh-0.4.min.js" type="application/javascript"></script>
-   """
-  def renderJavascript(containerId: String): String
+  def dependencies: NodeSeq = Seq(
+    <link href="http://cdn.pydata.org/bokeh-0.4.min.css" rel="stylsheet" type="text/css"></link>,
+    <script src="http://cdn.pydata.org/bokeh-0.4.min.js" type="application/javascript"></script>
+  )
+  def renderJavascript(containerId: String): NodeSeq
   def title: Option[String]
   def urlPath = "/plot/" + registry.register(self)
 }

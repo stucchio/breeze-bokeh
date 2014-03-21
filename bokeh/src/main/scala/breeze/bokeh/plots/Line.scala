@@ -5,6 +5,7 @@ import breeze.bokeh.templates.plots._
 import Plot._
 import breeze.linalg._
 import spray.json._
+import scala.xml._
 import com.bayesianwitch.injera.misc.UUIDWeakReferenceRegistry
 import DefaultJsonProtocol._
 
@@ -14,5 +15,5 @@ case class Line[T](x: RenderableNumericArray[T], y: RenderableNumericArray[T], x
 
   private def ld = lineDash.map( _.toList.toJson.compactPrint ).getOrElse("[]")
 
-  def renderJavascript(containerId: String) = html.line(containerId, x.render, y.render, xlabel, ylabel, lineWidth, ld, lineColor, xr, yr).toString
+  def renderJavascript(containerId: String) = Seq(<script type="application/javascript">html.line(containerId, x.render, y.render, xlabel, ylabel, lineWidth, ld, lineColor, xr, yr)</script>)
 }
