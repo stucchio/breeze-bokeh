@@ -7,9 +7,8 @@ trait Plot { self: Plot =>
   registry.register(self)
 
   def dependencies: String = """
-      <link href="/static/css/bokeh.css" rel="stylesheet">
-      <script data-main="/static/js/main" src='/static/js/vendor/requirejs/require.js'></script>
-      <script src="/static/js/config.js"></script>
+      <link href="http://cdn.pydata.org/bokeh-0.4.min.css" rel="stylsheet" type="text/css"></link>
+      <script src="http://cdn.pydata.org/bokeh-0.4.min.js" type="application/javascript"></script>
    """
   def renderJavascript(containerId: String): String
   def title: Option[String]

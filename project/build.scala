@@ -6,8 +6,8 @@ import twirl.sbt.TwirlPlugin._
 object ApplicationBuild extends Build {
 
   val logbackVersion = "1.0.13"
-  val sprayVersion = "1.2-20130822"
-  val akkaVersion = "2.2.1"
+  val sprayVersion = "1.3.1"//"1.2-20130822"
+  val akkaVersion = "2.3.0"
 
   val dependencies = Seq(
     "org.scalanlp" % "breeze_2.10" % "0.7-SNAPSHOT",
@@ -31,13 +31,13 @@ object ApplicationBuild extends Build {
     organization := "com.bayesianwitch",
     credentials += Credentials(Path.userHome / ".ivy2" / ".credentials"),
     scalaVersion := "2.10.0",
-    version := "0.01.5",
+    version := "0.01.1",
     resolvers ++= myResolvers,
     name := "breeze-bokeh",
     mainClass := Some("breeze.bokeh.Server"),
     //fork := true,
     libraryDependencies ++= dependencies,
-    publishTo := Some(Resolver.file("file",  new File( "/tmp/injera-publish" )) )
+    publishTo := Some(Resolver.file("file",  new File( "/tmp/breeze-bokeh-publish" )) )
   ) ++ Twirl.settings
 
   val myResolvers = Seq(

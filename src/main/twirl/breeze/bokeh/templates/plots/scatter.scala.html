@@ -1,7 +1,7 @@
 @(containerId: String, xdata: String, ydata: String, radius: String, xlabel: String, ylabel: String, title: Option[String], xrange: (Double,Double), yrange: (Double,Double))
 <script type="application/javascript">
 (function() {
-  require(['main'], function(Bokeh) {
+
     var data, i, options, plot, scatter, val;
     var x = @Html(xdata);
     var y = @Html(ydata);
@@ -39,7 +39,5 @@
     };
     plot = Bokeh.Plotting.make_plot(scatter, data, options);
     return Bokeh.Plotting.show(plot, [document.getElementById("@{containerId}")]);
-  });
-
-}).call(this);
+})();
 </script>

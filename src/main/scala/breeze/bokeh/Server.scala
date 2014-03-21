@@ -34,9 +34,9 @@ object Server {
   private implicit val rs = implicitly[spray.routing.RoutingSettings]
   private implicit val eh = implicitly[spray.routing.ExceptionHandler]
 
-  private class HttpServer(protected val plotRegistry: UUIDWeakReferenceRegistry[Plot]) extends Actor with HttpService with ActorLogging with BreezeDataServer with BreezeBokehProvider  {
+  private class HttpServer(protected val plotRegistry: UUIDWeakReferenceRegistry[Plot]) extends Actor with HttpService with ActorLogging with BreezeDataServer {
     def actorRefFactory = context
     def receive = runRoute(routes)
-    val routes = dataRoutes ~ bokehRoutes
+    val routes = dataRoutes
   }
 }

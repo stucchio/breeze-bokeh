@@ -1,14 +1,15 @@
-@(containerId: String, javascript: String, title: Option[String] = None)
+@(containerId: String, plot: breeze.bokeh.Plot)
 
 <!doctype html>
 <html>
   <head>
       <meta charset='UTF-8' />
       <meta http-equiv='content-type' content='text/html; charset=utf-8' />
-      <title>@{title.getOrElse("Breeze-Bokeh plot")}</title>
+      <title>@{plot.title.getOrElse("Breeze-Bokeh plot")}</title>
+      @Html(plot.dependencies)
   </head>
   <body>
       <div id="@{containerId}"></div>
-      @Html(javascript)
+      @Html(plot.renderJavascript(containerId))
   </body>
 </html>

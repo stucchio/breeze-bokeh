@@ -1,7 +1,6 @@
 @(containerId: String, xdata: String, ydata: String, xlabel: String, ylabel: String, lineWidth: Int, lineDash: String, lineColor: String, xrange: (Double,Double), yrange: (Double,Double))
 <script type="application/javascript">
 (function() {
-  require(['main'], function(Bokeh) {
     data = {
       x: @Html(xdata),
       y: @Html(ydata),
@@ -26,6 +25,6 @@
 
     plot = Bokeh.Plotting.make_plot(spec, data, options)
     return Bokeh.Plotting.show(plot, [document.getElementById("@{containerId}")]);
-  });
-}).call(this);
+
+})();
 </script>

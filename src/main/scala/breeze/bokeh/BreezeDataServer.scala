@@ -27,7 +27,7 @@ trait BreezeDataServer extends HttpService with SprayJsonSupport with ActorLoggi
           val containerId = UUID.randomUUID.toString
           respondWithMediaType(`text/html`) {
             complete {
-              templates.html.plot(containerId, plot.renderJavascript(containerId), plot.title).toString
+              templates.html.plot(containerId, plot).toString
             }
           }
         }).getOrElse( complete { HttpResponse(StatusCodes.NotFound) } )
