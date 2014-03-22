@@ -21,8 +21,6 @@
       line_dash: @{lineDash},
       line_color: "@{lineColor}",
     }
-
     plot = Bokeh.Plotting.make_plot(spec, data, options)
     return Bokeh.Plotting.show(plot, [document.getElementById("@{containerId}")]);
-
 })();
