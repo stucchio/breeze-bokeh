@@ -4,7 +4,6 @@ import breeze.linalg._
 import spray.json._
 import spire.implicits._
 
-//typeclass representing a way of turning objects into json arrays
 trait JsonNumericArraySerializer[T] {
   def renderJson(obj: T): JsValue
   def render(obj: T) = renderJson(obj).compactPrint
@@ -12,16 +11,26 @@ trait JsonNumericArraySerializer[T] {
   def min(obj: T): Double
 }
 
-abstract class JsonNumericArraySerializerFromJsonFormat[T](format: RootJsonFormat[T]) extends JsonNumericArraySerializer[T] {
-  def renderJson(obj: T) = format.write(obj)
+trait RenderableNumericArray {
+  def renderJson: JsValue
+  def render: String
+  def max: Double
+  def min: Double
 }
 
-object JsonNumericArraySerializers {
+trait BreezeSerializers {
+  //typeclass representing a way of turning objects into json arrays
+
+  abstract class JsonNumericArraySerializerFromJsonFormat[T](format: RootJsonFormat[T]) extends JsonNumericArraySerializer[T] {
+    def renderJson(obj: T) = format.write(obj)
+  }
+
+
   private trait DummyReader {
     def read(json: JsValue) = ???
   }
 
-  implicit val DoubleDenseVectorWriter = new JsonNumericArraySerializerFromJsonFormat(new RootJsonFormat[DenseVector[Double]] with DummyReader {
+  implicit val DoubleDenseVectorWriter  = new JsonNumericArraySerializerFromJsonFormat(new RootJsonFormat[DenseVector[Double]] with DummyReader {
     def write(obj: DenseVector[Double]) = {
       //fugly but due to type erasure I don't know a better way
       val resultArray = new Array[JsNumber](obj.length)
@@ -57,7 +66,7 @@ object JsonNumericArraySerializers {
     def min(obj: DenseVector[Long]) = breeze.linalg.min(obj)
   }
 
-  implicit val IntDenseVectorWriter = new JsonNumericArraySerializerFromJsonFormat(new RootJsonFormat[DenseVector[Int]] with DummyReader {
+  implicit val IntDenseVectorWriter: JsonNumericArraySerializer[DenseVector[Int]] = new JsonNumericArraySerializerFromJsonFormat(new RootJsonFormat[DenseVector[Int]] with DummyReader {
     def write(obj: DenseVector[Int]) = {
       //fugly but due to type erasure I don't know a better way
       val resultArray = new Array[JsNumber](obj.length)
@@ -95,5 +104,12 @@ object JsonNumericArraySerializers {
   }) {
     def max(obj: Array[Int]) = obj.max
     def min(obj: Array[Int]) = obj.max
+  }
+
+  implicit class RenderableNumericArrayFromSerializer[T](val data: T)(implicit serializer: JsonNumericArraySerializer[T]) extends RenderableNumericArray {
+    def renderJson: JsValue = serializer.renderJson(data)
+    def render: String = serializer.render(data)
+    def max: Double = serializer.max(data)
+    def min: Double = serializer.min(data)
   }
 }

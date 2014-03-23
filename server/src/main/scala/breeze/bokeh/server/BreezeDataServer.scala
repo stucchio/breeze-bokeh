@@ -12,10 +12,8 @@ import breeze.linalg._
 import java.util.UUID
 import com.bayesianwitch.injera.misc.UUIDWeakReferenceRegistry
 
-
-trait BreezeDataServer extends HttpService with SprayJsonSupport with ActorLogging { self: Actor =>
+private[server] trait BreezeDataServer extends HttpService with SprayJsonSupport with ActorLogging { self: Actor =>
   protected def plotRegistry: UUIDWeakReferenceRegistry[Plot]
-
 
   private class NotFoundException(msg: String) extends Exception(msg)
 
