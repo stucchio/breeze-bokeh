@@ -11,7 +11,7 @@ import java.util.UUID
 import com.bayesianwitch.injera.misc.UUIDWeakReferenceRegistry
 
 class Server(hostname: String, port: Int)(implicit val system: ActorSystem) extends PlotServer[UUID] {
-  private def registry = new UUIDWeakReferenceRegistry[Plot]
+  private val registry = new UUIDWeakReferenceRegistry[Plot]
   protected def registerImpl(plot: Plot): UUID = registry.register(plot)
   def plotURL(plot: Plot): String = "http://" + hostname + (if (port == 80) { "" } else { ":" + port }) + "/plot/" + register(plot)
 
@@ -25,7 +25,7 @@ class Server(hostname: String, port: Int)(implicit val system: ActorSystem) exte
     val routes = dataRoutes
   }
 
-  private val server = system.actorOf(Props[HttpServer], "bokeh-server")
+  private val server = system.actorOf(Props(new HttpServer), "bokeh-server")
   IO(Http) ! Http.Bind(server, hostname, port)
 }
 
@@ -36,7 +36,7 @@ object Server {
   private var server: Option[Server] = None
   def start(hostname: String, port: Int) = this.synchronized {
     if (!server.isDefined) {
-      val server = Some(new Server(hostname, port))
+      server = Some(new Server(hostname, port))
     }
     server.get
   }
@@ -47,7 +47,7 @@ object Server {
     implicit val server = start("localhost", 8080)
 
     val x = DenseVector.range(0,32)
-    val plot = plots.Line(x,x :* x,"xlabel", "ylabel",Some("my plot"))
+    val plot = plots.Line(x,x :* x,"time", "distance",Some("my plot"))
     println(server.plotURL(plot))
   }
 }
